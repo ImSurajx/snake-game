@@ -15,6 +15,7 @@ body {
 :root {
   --bg-primary-color: #0c0c0c;
   --bg-fill-color: rgb(253, 142, 5);
+  --bg-food-color: rgb(253, 5, 5);
   --text-primary-color: #f0f0f0;
   --space-xs: 0.25rem;
   --space-sm: 0.50rem;
@@ -63,6 +64,7 @@ section .infos .info {
 }
 section .board {
   border: 1px solid var(--border-primary-color);
+  border-radius: var(--border-radius-sm);
   flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -70,7 +72,13 @@ section .board {
 }
 section .board .block {
   border: 1px solid var(--border-primary-color);
+  border-radius: var(--border-radius-sm);
 }
 section .board .fill {
   background-color: var(--bg-fill-color);
+  border-radius: var(--border-radius-sm);
+}
+section .board .food {
+  background-color: var(--bg-food-color);
+  border-radius: var(--border-radius-sm);
 }/*# sourceMappingURL=style.css.map */
