@@ -9,21 +9,31 @@
 
 // calculate : the total number of rows & column, according to screen size
 const board = document.querySelector('.board');
-const blockHeight = 80;
-const blockWidth = 80;
-const cols = Math.floor(board.clientWidth / blockWidth);
-const rows = Math.floor(board.clientHeight / blockHeight);
-const blocks = [];
 const startButton = document.querySelector(".btn-start");
 const startGame = document.querySelector(".start-game");
 const gameOver = document.querySelector(".game-over");
 const modal = document.querySelector(".modal");
 const restartButton = document.querySelector(".btn-restart")
+const highScoreElement = document.querySelector("#high-score");
+const scoreElement = document.querySelector("#score");
+const timeElement = document.querySelector("#time");
+
+
+const blockHeight = 32;
+const blockWidth = 32;
+const cols = Math.floor(board.clientWidth / blockWidth);
+const rows = Math.floor(board.clientHeight / blockHeight);
+const blocks = [];
 let intervalId = null;
 let food = {
     x: Math.floor(Math.random() * rows),
     y: Math.floor(Math.random() * cols),
 }
+let highScore = localStorage.getItem("highScore")||0;
+let score = 0;
+let time = `00-00`;
+let timerIntervalId = null;
+highScoreElement.innerText = highScore;
 
 // start position of snake.
 let snake = [
@@ -93,6 +103,13 @@ function render() {
         };
         // Optionally grow snake (optional)
         snake.push(snake[snake.length - 1]);
+        score += 10;
+        scoreElement.innerText = score;
+        if(score>highScore){
+            highScore = score;
+            highScoreElement.innerText = highScore;
+            localStorage.setItem("highScore", highScore.toString());
+        }
     }
 }
 
@@ -117,13 +134,31 @@ function restartGame() {
         render()
     }, 500);
     directions = "right"; // or any safe starting direction
+    score = 0;
+    time = `00-00`
+    scoreElement.innerText = score;
+    highScoreElement.innerText = highScore;
+    timeElement.innerText = time;
 }
+
+
 
 startButton.addEventListener("click", () => {
     modal.style.display = "none";
     intervalId = setInterval(() => {
         render()
     }, 500);
+    timerIntervalId = setInterval(()=>{
+        let [min, sec] = time.split("-").map(Number);
+        if(sec==59){
+            min += 1;
+            sec = 0;
+        } else{
+            sec += 1;
+        }
+        time = `${min}-${sec}`;
+        timeElement.innerText = time;
+    },1000)
 })
 
 

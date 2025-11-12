@@ -64,23 +64,22 @@ section .infos .info {
 }
 section .board {
   border: 1px solid var(--border-primary-color);
-  border-radius: var(--border-radius-sm);
   flex-grow: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(32px, 1fr));
 }
 section .board .block {
   border: 1px solid var(--border-primary-color);
-  border-radius: var(--border-radius-sm);
+  border-radius: 50%;
 }
 section .board .fill {
   background-color: var(--bg-fill-color);
-  border-radius: var(--border-radius-sm);
+  border-radius: 50%;
 }
 section .board .food {
   background-color: var(--bg-food-color);
-  border-radius: var(--border-radius-sm);
+  border-radius: 50%;
 }
 
 .modal {
