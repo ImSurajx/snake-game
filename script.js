@@ -1,7 +1,3 @@
-const board = document.querySelector('.board');
-const blockHeight = 80;
-const blockWidth = 80;
-
 // logic of the Snake Game
 /*
 - 3 frame per second.
@@ -12,23 +8,32 @@ const blockWidth = 80;
 */
 
 // calculate : the total number of rows & column, according to screen size
+const board = document.querySelector('.board');
+const blockHeight = 80;
+const blockWidth = 80;
 const cols = Math.floor(board.clientWidth / blockWidth);
 const rows = Math.floor(board.clientHeight / blockHeight);
 const blocks = [];
+const startButton = document.querySelector(".btn-start");
+const startGame = document.querySelector(".start-game");
+const gameOver = document.querySelector(".game-over");
+const modal = document.querySelector(".modal");
+const restartButton = document.querySelector(".btn-restart")
 let intervalId = null;
 let food = {
     x: Math.floor(Math.random() * rows),
     y: Math.floor(Math.random() * cols),
 }
+
 // start position of snake.
-const snake = [
+let snake = [
     { x: 1, y: 3 },
     // {x : 1, y : 4}, 
     // {x : 1, y : 5},
 ]
 
 // direction of snake
-let directions = 'right'
+let directions = 'right';
 
 // add eventLister to get the directions
 addEventListener("keydown", (Event) => {
@@ -36,7 +41,7 @@ addEventListener("keydown", (Event) => {
     else if (event.key === "ArrowRight") directions = "right";
     else if (event.key === "ArrowLeft") directions = "left";
     else if (event.key === "ArrowDown") directions = "bottom";
-})
+});
 
 // create boxex rows*cols times. like 3x3 = 9 boxes will be created.
 for (let row = 0; row < rows; row++) {
@@ -63,9 +68,12 @@ function render() {
     else if (directions === "top") head = { x: snake[0].x - 1, y: snake[0].y }
     else if (directions === "bottom") head = { x: snake[0].x + 1, y: snake[0].y };
 
-    if (head.x < 0 || head.x > rows || head.y < 0 || head.y > cols) {
-        alert("Game Over");
+    if (head.x < 0 || head.x >= rows || head.y < 0 || head.y >= cols) {
+        modal.style.display = "flex";
         clearInterval(intervalId);
+        startGame.style.display = "none";
+        gameOver.style.display = "flex"
+        return;
     }; // alret if snake went outside of blocks
 
     snake.unshift(head); // add head at the beginning of the array
@@ -87,9 +95,38 @@ function render() {
         snake.push(snake[snake.length - 1]);
     }
 }
-intervalId = setInterval(() => {
-    render();
-}, 500);
+
+restartButton.addEventListener("click", restartGame)
+
+function restartGame() {
+    clearInterval(intervalId);
+    blocks[`(${food.x},${food.y})`].classList.remove("food");
+    // remove fill, so snake will look like moving
+    snake.forEach(segment => {
+        blocks[`(${segment.x},${segment.y})`].classList.remove("fill");
+    })
+    modal.style.display = "none";
+    snake = [
+        { x: 1, y: 3 },
+    ]
+    food = {
+        x: Math.floor(Math.random() * rows),
+        y: Math.floor(Math.random() * cols)
+    };
+    intervalId = setInterval(() => {
+        render()
+    }, 500);
+    directions = "right"; // or any safe starting direction
+}
+
+startButton.addEventListener("click", () => {
+    modal.style.display = "none";
+    intervalId = setInterval(() => {
+        render()
+    }, 500);
+})
+
+
 
 
 
