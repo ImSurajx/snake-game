@@ -64,11 +64,9 @@ section .board {
   border: 1px solid var(--border-primary-color);
   flex-grow: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(32px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
 }
 section .board .block {
-  height: 32px;
-  width: 32px;
   border: 1px solid var(--border-primary-color);
 }/*# sourceMappingURL=style.css.map */
