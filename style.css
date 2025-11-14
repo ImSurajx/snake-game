@@ -82,6 +82,7 @@ section .infos .info {
   border-radius: var(--border-radius-sm);
 }
 section .board {
+  touch-action: none;
   border: 1px solid var(--border-primary-color);
   flex-grow: 1;
   display: grid;

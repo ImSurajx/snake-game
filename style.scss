@@ -92,6 +92,7 @@ section {
        MAIN GAME BOARD
        ============================ */
     .board {
+        touch-action: none; // remove default touch behaviour of browser
         border: 1px solid var(--border-primary-color);
 
         flex-grow: 1;
