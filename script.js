@@ -22,6 +22,7 @@ const restartButton = document.querySelector(".btn-restart")
 const highScoreElement = document.querySelector("#high-score");
 const scoreElement = document.querySelector("#score");
 const timeElement = document.querySelector("#time");
+const pauseBtn = document.querySelector(".pause-btn");
 
 
 // ===============================
@@ -63,6 +64,7 @@ let startY;
 let endX;
 let endY;
 let speed = 400;  // initial speed of snake
+let isPaused = false;
 
 
 // ===============================
@@ -81,6 +83,7 @@ let directions = 'right';
 // ===============================
 // Using arrow keys to update snake direction
 addEventListener("keydown", (event) => {
+    if (isPaused) return;
     if (snake.length === 1) {
         if (event.key === "ArrowUp") directions = "top";
         else if (event.key === "ArrowRight") directions = "right";
@@ -117,6 +120,7 @@ board.addEventListener("touchstart", (event) => {
 });
 
 board.addEventListener("touchend", (event) => {
+    if (isPaused) return;
     endX = event.changedTouches[0].clientX;
     endY = event.changedTouches[0].clientY;
     const dx = endX - startX;
@@ -215,6 +219,39 @@ function render() {
         intervalId = setInterval(render, speed)
     }
 }
+
+// Pause & Resume
+pauseBtn.addEventListener("click", (event) => {
+    if (isPaused === false) {
+        // pause
+        clearInterval(intervalId);
+        clearInterval(timerIntervalId);
+        isPaused = true;
+        pauseBtn.innerText = "Resume"
+    } else if (isPaused === true) {
+        intervalId = setInterval(() => {
+            render();
+        }, speed);
+        timerIntervalId = setInterval(() => {
+
+            let [min, sec] = time.split("-").map(Number);
+
+            if (sec == 59) {
+                min += 1;
+                sec = 0;
+            } else {
+                sec += 1;
+            }
+
+            // update time
+            time = `${min}-${sec}`;
+            timeElement.innerText = time;
+
+        }, 1000)
+        isPaused = false;
+        pauseBtn.innerText = "Pause";
+    }
+});
 
 
 // ===============================
